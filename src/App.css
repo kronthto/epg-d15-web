@@ -13,3 +13,16 @@
 .board {
   font-size: 15px;
 }
+
+.yellow {
+  background-color: yellow;
+}
+.green {
+  background-color: green;
+}
+.red {
+  background-color: red;
+}
+.blue {
+  background-color: blue;
+}

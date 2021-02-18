@@ -38,6 +38,14 @@ class App extends React.Component {
       <section>
         {this.renderControls()}
       </section>
+      <br/>
+      <section>
+        {this.renderMovementInfo()}
+      </section>
+      <br/>
+      <section>
+        {this.renderLog()}
+      </section>
     </div>
   }
 
@@ -56,7 +64,6 @@ class App extends React.Component {
     }
 
     let rows = [];
-
     for (let y = ROOM_MAX_Y; y >= 0; y--) {
       let cols = [];
       for (let x = 0; x <= ROOM_MAX_X; x++) {
@@ -70,7 +77,11 @@ class App extends React.Component {
           content = coordString;
         }
 
-        cols.push(<div className="coll" key={x}>{content}</div>);
+        let col_classes = 'coll';
+        if (dungeon) {
+          col_classes += ' ' + dungeon.colorAt(x, y);
+        }
+        cols.push(<div className={col_classes} key={x}>{content}</div>);
       }
       rows.push(<div key={y} className="roww">{cols}</div>);
     }
@@ -81,7 +92,6 @@ class App extends React.Component {
   }
 
   renderControls() {
-
     let testDefaults = randomDefaults
 
     const dungeon = this.state.dungeon;
@@ -176,13 +186,50 @@ class App extends React.Component {
         <p>HP: {dungeon.hp}</p>
         <p>Sequence: {dungeon.sequence}</p>
         <p>Turns: {this.state.numTurns}</p>
-        {dungeon.getPossibleMoves().map(move => <button key={move} type="button" className="btn" onClick={() => {
-          dungeon.move(move);
-          this.setState({numTurns: dungeon.turns.length});
-        }}>{move}</button> )}
-        <br/>
+        {dungeon.getPossibleMoves().map(possibleMove => {
+          let move = possibleMove.move;
+          let disabled = !possibleMove.possible;
+          return <button key={move} disabled={disabled} type="button" className="btn" onClick={() => {
+            dungeon.move(move);
+            this.setState({ numTurns: dungeon.turns.length });
+          }}>{move}</button>;
+        })}
+        <br />
       </div>
     }
+  }
+
+  renderMovementInfo() {
+    const dungeon = this.state.dungeon;
+    if (!dungeon) {
+      return;
+    }
+    let moveAmount = dungeon.state === 'sword' ? 2 : 1;
+    let dogMove = dungeon.getDogMoveDescription();
+    let catMove = dungeon.getCatMoveDescription();
+    let dragonMove = dungeon.getDragonMoveDescription();
+    return <div>
+      <div><b>Movement Info</b></div>
+      <div>Player Move: {moveAmount}</div>
+      <div>Dog Move: {dogMove}</div>
+      <div>Cat Move: {catMove}</div>
+      <div>Dragon Move: {dragonMove}</div>
+    </div>;
+  }
+
+  renderLog() {
+    const dungeon = this.state.dungeon;
+    if (!dungeon) {
+      return;
+    }
+    let logEntries = [];
+    dungeon.turns.forEach(turn => {
+      logEntries.push(<div>{turn}</div>)
+    });
+    return <div>
+      <div><b>Movement Log</b></div>
+      {logEntries}
+    </div>
   }
 }
 
