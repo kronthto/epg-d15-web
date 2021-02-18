@@ -269,88 +269,71 @@ class D15Game {
     }
   }
 
-  dogmove() {
+  getIntendedDogMoveDirection() {
     if (this.hp > 130) {
-
-      let intendedMove;
       let dogOn = this.colorAt(this.dog.x, this.dog.y);
-
       switch (this.sequence) {
         case 'yellow_square':
           switch (dogOn) {
             case 'yellow':
-              intendedMove = 'down';
-              break;
+              return 'down';
             case 'green':
-              intendedMove = 'up';
-              break;
+              return 'up';
             case 'red':
-              intendedMove = 'right';
-              break;
+              return 'right';
             case 'blue':
-              intendedMove = 'left';
-              break;
+              return 'left';
             default:
               throw Error("uk sequence dogmove");
           }
-          break;
         case 'green_square':
           switch (dogOn) {
             case 'yellow':
-              intendedMove = 'down';
-              break;
+              return 'down';
             case 'green':
-              intendedMove = 'right';
-              break;
+              return 'right';
             case 'red':
-              intendedMove = 'left';
-              break;
+              return 'left';
             case 'blue':
-              intendedMove = 'up';
-              break;
+              return 'up';
             default:
               throw Error("uk sequence dogmove");
           }
-          break;
         case 'red_square':
           switch (dogOn) {
             case 'yellow':
-              intendedMove = 'left';
-              break;
+              return 'left';
             case 'green':
-              intendedMove = 'right';
-              break;
+              return 'right';
             case 'red':
-              intendedMove = 'up';
-              break;
+              return 'up';
             case 'blue':
-              intendedMove = 'down';
-              break;
+              return 'down';
             default:
               throw Error("uk sequence dogmove");
           }
-          break;
         case 'blue_square':
           switch (dogOn) {
             case 'yellow':
-              intendedMove = 'right';
-              break;
+              return 'right';
             case 'green':
-              intendedMove = 'down';
-              break;
+              return 'down';
             case 'red':
-              intendedMove = 'up';
-              break;
+              return 'up';
             case 'blue':
-              intendedMove = 'left';
-              break;
+              return 'left';
             default:
               throw Error("uk sequence dogmove");
           }
-          break;
         default:
           throw Error("uk sequence dogmove");
       }
+    }
+  }
+
+  dogmove() {
+    if (this.hp > 130) {
+      let intendedMove = this.getIntendedDogMoveDirection();
 
       let intendedXDir, intendedYDir;
       switch (intendedMove) {
@@ -382,8 +365,6 @@ class D15Game {
       } else if (this.isPossibleMoveTarget(prio2.x, prio2.y, 'dog')) {
         this.dog = prio2;
       }
-
-
     } else if (this.hp > 100) {
       // switch cat
       let tmp = this.dog;
@@ -398,6 +379,33 @@ class D15Game {
       this.dog = this.dragon;
       this.dragon = tmp;
     }
+  }
+
+  getDogMoveDescription() {
+    if (this.hp > 130) {
+      let prio1 = this.getIntendedDogMoveDirection();
+      let prio2;
+      switch (prio1) {
+        case 'up':
+          prio2 = 'down'
+          break;
+        case 'down':
+          prio2 = 'up'
+          break;
+        case 'left':
+          prio2 = 'right'
+          break;
+        case 'right':
+          prio2 = 'left'
+          break;
+      }
+      return 'Teleport ' + prio1 + ' 5 - if blocked: ' + prio2 + ' 2 - if blocked: no move'
+    } else if (this.hp > 100) {
+      return 'Switch with cat';
+    } else if (this.hp > 60) {
+      return 'Up 3';
+    }
+    return 'Switch with dragon';
   }
 
   catmove() {
@@ -439,6 +447,17 @@ class D15Game {
     }
   }
 
+  getCatMoveDescription() {
+    if (this.hp > 130) {
+      return 'Move 1 towards the dragon (prioritize up/down over left/right, no move if blocked, no move if dragon is in the 8 spaces around the cat)';
+    } else if (this.hp > 100) {
+      return 'Down 3';
+    } else if (this.hp > 60) {
+      return 'Move 1 away from you (prioritize up/down over left/right, no move if blocked)';
+    }
+    return 'Right 3';
+  }
+
   dragonmove() {
     if (this.hp > 130) {
       let mirrorPoint = mirrorBy(this.dragon, this.player);
@@ -456,6 +475,17 @@ class D15Game {
       // left 3
       this.dragon = this.findMoveUntil(this.dragon, 'dragon', -1, 0, 3);
     }
+  }
+
+  getDragonMoveDescription() {
+    if (this.hp > 130) {
+      return 'Teleport that mirrors using you as reference (point reflection)';
+    } else if (this.hp > 100) {
+      return 'nothing';
+    } else if (this.hp > 60) {
+      return 'Teleport that mirrors using the center of the board as reference (point reflection)';
+    }
+    return 'Left 3';
   }
 
   serialize()

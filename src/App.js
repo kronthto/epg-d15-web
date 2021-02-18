@@ -40,6 +40,10 @@ class App extends React.Component {
       </section>
       <br/>
       <section>
+        {this.renderMovementInfo()}
+      </section>
+      <br/>
+      <section>
         {this.renderLog()}
       </section>
     </div>
@@ -195,14 +199,33 @@ class App extends React.Component {
     }
   }
 
+  renderMovementInfo() {
+    const dungeon = this.state.dungeon;
+    if (!dungeon) {
+      return;
+    }
+    let moveAmount = dungeon.state === 'sword' ? 2 : 1;
+    let dogMove = dungeon.getDogMoveDescription();
+    let catMove = dungeon.getCatMoveDescription();
+    let dragonMove = dungeon.getDragonMoveDescription();
+    return <div>
+      <div><b>Movement Info</b></div>
+      <div>Player Move: {moveAmount}</div>
+      <div>Dog Move: {dogMove}</div>
+      <div>Cat Move: {catMove}</div>
+      <div>Dragon Move: {dragonMove}</div>
+    </div>;
+  }
+
   renderLog() {
     const dungeon = this.state.dungeon;
-    let logEntries = [];
-    if (dungeon) {
-      dungeon.turns.forEach(turn => {
-        logEntries.push(<div>{turn}</div>)
-      });
+    if (!dungeon) {
+      return;
     }
+    let logEntries = [];
+    dungeon.turns.forEach(turn => {
+      logEntries.push(<div>{turn}</div>)
+    });
     return <div>
       <div><b>Movement Log</b></div>
       {logEntries}
