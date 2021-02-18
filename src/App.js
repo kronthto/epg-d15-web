@@ -38,6 +38,10 @@ class App extends React.Component {
       <section>
         {this.renderControls()}
       </section>
+      <br/>
+      <section>
+        {this.renderLog()}
+      </section>
     </div>
   }
 
@@ -189,6 +193,20 @@ class App extends React.Component {
         <br />
       </div>
     }
+  }
+
+  renderLog() {
+    const dungeon = this.state.dungeon;
+    let logEntries = [];
+    if (dungeon) {
+      dungeon.turns.forEach(turn => {
+        logEntries.push(<div>{turn}</div>)
+      });
+    }
+    return <div>
+      <div><b>Movement Log</b></div>
+      {logEntries}
+    </div>
   }
 }
 
