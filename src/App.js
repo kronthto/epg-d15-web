@@ -84,7 +84,6 @@ class App extends React.Component {
   }
 
   renderControls() {
-
     let testDefaults = randomDefaults
 
     const dungeon = this.state.dungeon;
@@ -179,11 +178,15 @@ class App extends React.Component {
         <p>HP: {dungeon.hp}</p>
         <p>Sequence: {dungeon.sequence}</p>
         <p>Turns: {this.state.numTurns}</p>
-        {dungeon.getPossibleMoves().map(move => <button key={move} type="button" className="btn" onClick={() => {
-          dungeon.move(move);
-          this.setState({numTurns: dungeon.turns.length});
-        }}>{move}</button> )}
-        <br/>
+        {dungeon.getPossibleMoves().map(possibleMove => {
+          let move = possibleMove.move;
+          let disabled = !possibleMove.possible;
+          return <button key={move} disabled={disabled} type="button" className="btn" onClick={() => {
+            dungeon.move(move);
+            this.setState({ numTurns: dungeon.turns.length });
+          }}>{move}</button>;
+        })}
+        <br />
       </div>
     }
   }

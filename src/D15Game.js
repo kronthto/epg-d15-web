@@ -104,36 +104,25 @@ class D15Game {
   getPossibleMoves() {
     // TODO: Move these checks outside
     if (this.hp <= 0) {
-      return ["DEAD"];
+      return [{move: 'DEAD', possible: false}];
     }
     if (this.checkWin()) {
-      return ["ATTACK"];
+      return [{move: 'ATTACK', possible: false}];
     }
 
     let moves = [];
 
     let moveAmount = this.state === 'sword' ? 2 : 1;
 
-    if (this.isPossibleMoveTarget(this.player.x - moveAmount, this.player.y)) {
-      moves.push("left");
-    }
-    if (this.isPossibleMoveTarget(this.player.x + moveAmount, this.player.y)) {
-      moves.push("right");
-    }
-    if (this.isPossibleMoveTarget(this.player.x, this.player.y - moveAmount)) {
-      moves.push("down");
-    }
-    if (this.isPossibleMoveTarget(this.player.x, this.player.y + moveAmount)) {
-      moves.push("up");
-    }
-
-    moves.push('dog');
-    moves.push('cat');
-    moves.push('dragon');
-    moves.push('switch');
-    if (this.hp > 60) {
-      moves.push('pass turn');
-    }
+    moves.push({move: 'left', possible: this.isPossibleMoveTarget(this.player.x - moveAmount, this.player.y)});
+    moves.push({move: 'right', possible: this.isPossibleMoveTarget(this.player.x + moveAmount, this.player.y)});
+    moves.push({move: 'down', possible: this.isPossibleMoveTarget(this.player.x, this.player.y - moveAmount)});
+    moves.push({move: 'up', possible: this.isPossibleMoveTarget(this.player.x, this.player.y + moveAmount)});
+    moves.push({move: 'dog', possible: true});
+    moves.push({move: 'cat', possible: true});
+    moves.push({move: 'dragon', possible: true});
+    moves.push({move: 'switch', possible: true});
+    moves.push({move: 'pass turn', possible: this.hp > 60});
 
     return moves;
   }
