@@ -130,23 +130,10 @@ class D15Game {
     moves.push('dog');
     moves.push('cat');
     moves.push('dragon');
-    moves.push('switch'); // TODO :early switch / (nur) alle x runs?
+    moves.push('switch');
     if (this.hp > 60) {
       moves.push('pass turn');
     }
-
-    /*
-    let movePriority = {
-      'up': (this.boss.y - this.player.y) || -1,
-      'down': (this.player.y - this.boss.y) || -1,
-      'right': (this.boss.x - this.player.x) || -1,
-      'left': (this.player.x - this.boss.x) || -1,
-    };
-    // TODO: negatives scoring für final posi pets?
-    moves = moves.sort((a, b) => {
-      return (movePriority[b] || 0) - (movePriority[a] || 0);
-    });
-    */
 
     return moves;
   }
@@ -433,7 +420,7 @@ class D15Game {
       if (!(Math.abs(diffX) > 1 || Math.abs(diffY) > 1)) {
         return;
       }
-      if (Math.abs(diffX) > Math.abs(diffY)) { // TODO: This was adjusted
+      if (Math.abs(diffX) > Math.abs(diffY)) { // TODO: This was adjusted (? still relevant?
         catMove.x += Math.sign(diffX);
       } else {
         catMove.y += Math.sign(diffY);

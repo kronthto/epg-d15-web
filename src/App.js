@@ -181,14 +181,6 @@ class App extends React.Component {
           this.setState({numTurns: dungeon.turns.length});
         }}>{move}</button> )}
         <br/>
-        <button style={{display: 'none'}} type="button" onClick={() => {
-         // console.log(solve(dungeon));
-          /*
-          gamePermutation => {
-            this.setState({dungeon: gamePermutation, numTurns: gamePermutation.turns.length})
-          }
-           */
-        }}>Solve</button>
       </div>
     }
   }
