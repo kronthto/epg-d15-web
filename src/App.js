@@ -56,7 +56,6 @@ class App extends React.Component {
     }
 
     let rows = [];
-
     for (let y = ROOM_MAX_Y; y >= 0; y--) {
       let cols = [];
       for (let x = 0; x <= ROOM_MAX_X; x++) {
@@ -70,7 +69,11 @@ class App extends React.Component {
           content = coordString;
         }
 
-        cols.push(<div className="coll" key={x}>{content}</div>);
+        let col_classes = 'coll';
+        if (dungeon) {
+          col_classes += ' ' + dungeon.colorAt(x, y);
+        }
+        cols.push(<div className={col_classes} key={x}>{content}</div>);
       }
       rows.push(<div key={y} className="roww">{cols}</div>);
     }
