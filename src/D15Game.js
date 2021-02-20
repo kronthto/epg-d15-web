@@ -102,7 +102,6 @@ class D15Game {
   }
 
   getPossibleMoves() {
-    // TODO: Move these checks outside
     if (this.hp <= 0) {
       return [{move: 'DEAD', possible: false}];
     }
@@ -417,7 +416,7 @@ class D15Game {
       if (!(Math.abs(diffX) > 1 || Math.abs(diffY) > 1)) {
         return;
       }
-      if (Math.abs(diffX) > Math.abs(diffY)) { // TODO: This was adjusted (? still relevant?
+      if (Math.abs(diffX) > Math.abs(diffY)) {
         catMove.x += Math.sign(diffX);
       } else {
         catMove.y += Math.sign(diffY);
@@ -490,10 +489,12 @@ class D15Game {
 
   serialize()
   {
-    let str = this.state+this.hp+'_';
+    let str = this.hp+'_';
     ENTITIES.forEach(entity => {
-      str += this[entity].x.toString() + this[entity].y.toString() +'_';
+      str += this[entity].x.toString() + '_' + this[entity].y.toString() +'_';
     });
+    str += this.state.charAt(0).toUpperCase()+'_';
+    str += this.sequence.charAt(0).toUpperCase();
     return str;
   }
 
@@ -506,6 +507,7 @@ class D15Game {
     clonedGame.hp = this.hp;
     clonedGame.state = this.state;
     clonedGame.turns = [...this.turns];
+    clonedGame.sequence = this.sequence;
     return clonedGame;
   }
 

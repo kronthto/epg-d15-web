@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import D15Game, {ENTITIES, entityIcons, ROOM_MAX_X, ROOM_MAX_Y} from "./D15Game";
+import getSolver from './solver';
 
 const randomIntFromInterval = function(min, max) { // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -41,6 +42,10 @@ class App extends React.Component {
       <br/>
       <section>
         {this.renderMovementInfo()}
+      </section>
+      <br/>
+      <section>
+        {this.renderSolver()}
       </section>
       <br/>
       <section>
@@ -214,6 +219,24 @@ class App extends React.Component {
       <div>Dog Move: {dogMove}</div>
       <div>Cat Move: {catMove}</div>
       <div>Dragon Move: {dragonMove}</div>
+    </div>;
+  }
+
+  renderSolver() {
+    const dungeon = this.state.dungeon;
+    if (!dungeon) {
+      return;
+    }
+    let magic_str = dungeon.serialize(); // todo: allow resuming by this string too
+    const {solution} = this.state;
+    return <div>
+      <button type="button" className="btn" onClick={() => {
+        getSolver().then(solver => {
+          this.setState({solution: solver(magic_str)})
+        })
+      }}>Solve</button>
+      <p>{magic_str}</p>
+      <p>{solution && <ol>{solution.split('_').filter(move => !!move).map((move,i) => <li key={i}>{move}</li>)}</ol>}</p>
     </div>;
   }
 
