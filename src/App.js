@@ -117,7 +117,7 @@ class App extends React.Component {
         newDung.sequence = this.refs['11color'].value+'_square';
         this.setState({dungeon: newDung, numTurns: 0})
       }}>
-        <p>Configure your board according to the shown coordinates and click "Start".</p>
+        <p>Configure your board according to the shown coordinates and click "Start". You can also copy-paste it in on Desktop, and only need to set HP and color manually. After starting, there will be a button to calculate a solution.</p>
         <div  className="form-inline py-10">
         <label htmlFor="hp">HP</label>
         <input type="number" min="1" max="200" required defaultValue="200" ref="hp" id="hp" className="form-control" />
